@@ -27,8 +27,13 @@ provider:
 
 plugins:
   - serverless-s3-sync
+  - serverless-webpack
+
+package:
+  individually: true
 
 custom:
+  tableName: users-table
   s3Sync:
     - bucketName: myserverlesss3bucket-1055
       localDir: uploadData
@@ -52,3 +57,14 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: myserverlesss3bucket-1055
+    MyDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: ID
+            AttributeType: S
+        KeySchema:
+          - AttributeName: ID
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST

@@ -16,3 +16,12 @@ Serverless create --template aws-nodejs --path serverlessProject
 
 What is S3 bucket?
 S3 bucket is object storage device which is used to store the images, files and videos. A bucket is container for objects. We can store any file in s3 bucket including metadata.
+
+webpack is used to reduce lambda file size, its reduces the lambda function deployment time.
+
+we can install webpack plugins using following commands...
+
+npm install --save serverless-webpack webpack
+
+then, we have to configure the plugins and package in serverless.yml
+
