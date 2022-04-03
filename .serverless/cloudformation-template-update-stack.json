@@ -167,7 +167,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/awsserverless/dev/1648784806493-2022-04-01T03:46:46.493Z/awsserverless.zip"
+          "S3Key": "serverless/awsserverless/dev/1648957287467-2022-04-03T03:41:27.467Z/hello.zip"
         },
         "Handler": "handler.hello",
         "Runtime": "nodejs12.x",
@@ -192,7 +192,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/awsserverless/dev/1648784806493-2022-04-01T03:46:46.493Z/awsserverless.zip"
+          "S3Key": "serverless/awsserverless/dev/1648957287467-2022-04-03T03:41:27.467Z/getUser.zip"
         },
         "Handler": "lambdas/getUser.handler",
         "Runtime": "nodejs12.x",
@@ -210,24 +210,24 @@
         "GetUserLogGroup"
       ]
     },
-    "HelloLambdaVersion6NKYLqkaMPsDbA61Pj3rmOTfMXfsOjWpdBaD0L95c": {
+    "HelloLambdaVersionEV3kscRQNKP9JTdItJX8KehTBay6MDo7a7I1sGzKVUc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "HelloLambdaFunction"
         },
-        "CodeSha256": "gWpzcUmtVsBTO1o5EScvrix0EKDT+hh1nFw9Q7BOWxw="
+        "CodeSha256": "KbscILRUkvHnuycGyA6KmQL+jFGa8sjifO+wI/9nbSU="
       }
     },
-    "GetUserLambdaVersionXvKjfHRyYGh5CwYJv74DVvc4NpJS6Yfi9MSHXPE": {
+    "GetUserLambdaVersion9h2iT1XjQUvdflTKi2u7nHrCwiwxVtFC52uZAlh0": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetUserLambdaFunction"
         },
-        "CodeSha256": "gWpzcUmtVsBTO1o5EScvrix0EKDT+hh1nFw9Q7BOWxw="
+        "CodeSha256": "a2rTEWC8fyWEGO7LawNOv0eheMN3dVyCgrpUbh4EBTU="
       }
     },
     "ApiGatewayRestApi": {
@@ -360,7 +360,7 @@
         "GetUserLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1648784802004": {
+    "ApiGatewayDeployment1648957283108": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -415,6 +415,25 @@
       "Properties": {
         "BucketName": "myserverlesss3bucket-1055"
       }
+    },
+    "MyDynamoDbTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "TableName": "users-table",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "ID",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "ID",
+            "KeyType": "HASH"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST"
+      }
     }
   },
   "Outputs": {
@@ -429,7 +448,7 @@
     "HelloLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HelloLambdaVersion6NKYLqkaMPsDbA61Pj3rmOTfMXfsOjWpdBaD0L95c"
+        "Ref": "HelloLambdaVersionEV3kscRQNKP9JTdItJX8KehTBay6MDo7a7I1sGzKVUc"
       },
       "Export": {
         "Name": "sls-awsserverless-dev-HelloLambdaFunctionQualifiedArn"
@@ -438,7 +457,7 @@
     "GetUserLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetUserLambdaVersionXvKjfHRyYGh5CwYJv74DVvc4NpJS6Yfi9MSHXPE"
+        "Ref": "GetUserLambdaVersion9h2iT1XjQUvdflTKi2u7nHrCwiwxVtFC52uZAlh0"
       },
       "Export": {
         "Name": "sls-awsserverless-dev-GetUserLambdaFunctionQualifiedArn"
