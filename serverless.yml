@@ -64,6 +64,13 @@ functions:
           path: get-player-score/{ID}
           method: GET
           cors: true
+  createPlayerScore:
+    handler: lambdas/endpoint/createUser.handler
+    events:
+      - http:
+          path: create-user/{ID}
+          method: POST
+          cors: true
 
 resources:
   Resources:

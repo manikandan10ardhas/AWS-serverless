@@ -16,6 +16,23 @@ const dynamoDB = {
         }
 
         return data.Item
+    },
+
+    async write(data, TableName) {
+        if(!TableName || !data) {
+            throw Error(`Invalid payload`)
+        }
+
+        const params = {
+            TableName,
+            Item: data
+        }
+
+        const res = await documentClient.put(params).promise()
+        if(!res) {
+            throw Error(`There was an error while inserting data:::${res}`)
+        }
+        return res
     }
 }
 
