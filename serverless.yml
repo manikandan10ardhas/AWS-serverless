@@ -12,18 +12,12 @@
 # Happy Coding!
 
 service: awsserverless
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
-frameworkVersion: '3'
 
 provider:
   name: aws
   runtime: nodejs12.x
   profile: manikandan55
+  region: us-east-1
   environment:
     tableName: ${self:custom.tableName}
     bucketName: ${self:custom.bucketName}
@@ -33,6 +27,9 @@ provider:
         - dynamodb:*
         - s3:*
       Resource: '*'
+  apiGateway:
+    apiKeys:
+      - MyKey
 
 plugins:
   - serverless-s3-sync
@@ -60,6 +57,7 @@ functions:
           path: get-user/{ID}
           method: GET
           cors: true
+          private: true
   getPlayerScore:
     handler: lambdas/endpoint/getPlayerScore.handler
     events:
