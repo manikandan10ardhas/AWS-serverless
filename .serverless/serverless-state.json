@@ -139,6 +139,12 @@
               "LogGroupName": "/aws/lambda/awsserverless-dev-getFileName"
             }
           },
+          "ProxyLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/awsserverless-dev-proxy"
+            }
+          },
           "IamRoleLambdaExecution": {
             "Type": "AWS::IAM::Role",
             "Properties": {
@@ -226,7 +232,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/awsserverless/dev/1650601961521-2022-04-22T04:32:41.521Z/hello.zip"
+                "S3Key": "serverless/awsserverless/dev/1651206353520-2022-04-29T04:25:53.520Z/hello.zip"
               },
               "Handler": "handler.hello",
               "Runtime": "nodejs12.x",
@@ -257,7 +263,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/awsserverless/dev/1650601961521-2022-04-22T04:32:41.521Z/getUser.zip"
+                "S3Key": "serverless/awsserverless/dev/1651206353520-2022-04-29T04:25:53.520Z/getUser.zip"
               },
               "Handler": "lambdas/endpoint/getUser.handler",
               "Runtime": "nodejs12.x",
@@ -288,7 +294,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/awsserverless/dev/1650601961521-2022-04-22T04:32:41.521Z/getPlayerScore.zip"
+                "S3Key": "serverless/awsserverless/dev/1651206353520-2022-04-29T04:25:53.520Z/getPlayerScore.zip"
               },
               "Handler": "lambdas/endpoint/getPlayerScore.handler",
               "Runtime": "nodejs12.x",
@@ -319,7 +325,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/awsserverless/dev/1650601961521-2022-04-22T04:32:41.521Z/createPlayerScore.zip"
+                "S3Key": "serverless/awsserverless/dev/1651206353520-2022-04-29T04:25:53.520Z/createPlayerScore.zip"
               },
               "Handler": "lambdas/endpoint/createUser.handler",
               "Runtime": "nodejs12.x",
@@ -350,7 +356,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/awsserverless/dev/1650601961521-2022-04-22T04:32:41.521Z/createFile.zip"
+                "S3Key": "serverless/awsserverless/dev/1651206353520-2022-04-29T04:25:53.520Z/createFile.zip"
               },
               "Handler": "lambdas/endpoint/createFile.handler",
               "Runtime": "nodejs12.x",
@@ -381,7 +387,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/awsserverless/dev/1650601961521-2022-04-22T04:32:41.521Z/getFileName.zip"
+                "S3Key": "serverless/awsserverless/dev/1651206353520-2022-04-29T04:25:53.520Z/getFileName.zip"
               },
               "Handler": "lambdas/endpoint/getFile.handler",
               "Runtime": "nodejs12.x",
@@ -405,64 +411,105 @@
               "GetFileNameLogGroup"
             ]
           },
-          "HelloLambdaVersion99rhV1pGOGhrt3cWCOOEp112hSK3cEpTEwfWW8QV6Y": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
+          "ProxyLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
             "Properties": {
-              "FunctionName": {
-                "Ref": "HelloLambdaFunction"
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/awsserverless/dev/1651206353520-2022-04-29T04:25:53.520Z/proxy.zip"
               },
-              "CodeSha256": "PvFh51x7jdQP4GGwGXHWkwkhhYQvtd4C5z9ovc5Ra64="
-            }
+              "Handler": "lambdas/endpoint/proxy.handler",
+              "Runtime": "nodejs12.x",
+              "FunctionName": "awsserverless-dev-proxy",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "tableName": "users-table",
+                  "bucketName": "myserverlesss3bucket-1055"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "ProxyLogGroup"
+            ]
           },
-          "GetUserLambdaVersionBvbp2cRifmV0NNQnXHRUxgIvM3UxLHowLEI6PPKb3M": {
+          "GetUserLambdaVersionGibQLeIh6TYujY0chDxl5lEXkb90A2gXKuAov6nFE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetUserLambdaFunction"
               },
-              "CodeSha256": "hVV4DiLof/sWYDdsfVNl8+a/4LFBmOQAiecJNmFFPGY="
+              "CodeSha256": "PaxSHVC4FVH9dMcnBbmoJkf79UDX+6dC64t3YouW0Hw="
             }
           },
-          "GetPlayerScoreLambdaVersionwJGIKXnfpGGExyOLMgryTqTps70kJ2zK1y2qlEt26Gc": {
+          "ProxyLambdaVersionV5dhU5f43y2kDgWFKLI6ScY5JbWp0alaGcJ9zzq2Mk": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "ProxyLambdaFunction"
+              },
+              "CodeSha256": "tZyX9yGYJGlCUD8LxUw9l/GqKmA86Z+Eho0lG3f2v+I="
+            }
+          },
+          "HelloLambdaVersionOfVCuVtqGAPwxkSsnAOPOV87qziiYuDaIwvljaxhjQ": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "HelloLambdaFunction"
+              },
+              "CodeSha256": "4aujr3J9+oZGv8QFKsw6j007jQz5Qaq0zujyP5Ll7+c="
+            }
+          },
+          "GetPlayerScoreLambdaVersion8rxNmLcth8312cF5i0cxVq8EWZgxXIASx6zxSEQOIg": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "GetPlayerScoreLambdaFunction"
               },
-              "CodeSha256": "YonpAgVxq/+Q5eqNb/mULkEVuhrklXFDR+ouw1YZQMQ="
+              "CodeSha256": "mCKJdvnze6ZRQOGenGmd1qa1UJU8YwZzUhRCBjZnf3M="
             }
           },
-          "CreateFileLambdaVersion57VdI7plmwoPJIo72ZdGNy8Qj18A323zeqKxcRM4CgI": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-              "FunctionName": {
-                "Ref": "CreateFileLambdaFunction"
-              },
-              "CodeSha256": "UCTJWPhkRD8l1Ov/3Onz+mz5SFsUtGookNOmhIoY4uA="
-            }
-          },
-          "GetFileNameLambdaVersione67X4V19A4jQWaCKyVKwtlDa73Yj1DVEwffkOojrY": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-              "FunctionName": {
-                "Ref": "GetFileNameLambdaFunction"
-              },
-              "CodeSha256": "FxG7lVCilnVAbzXPc6+wC6A5gKqHs1ofmTHgVSZjgk4="
-            }
-          },
-          "CreatePlayerScoreLambdaVersionup7ehDlwNMsE7HYTstApvqPLpguJw675QoFEfpg0Qmg": {
+          "CreatePlayerScoreLambdaVersioncfEpigiOcQRQCqBJGKfVmpftdOgTQmZ1jtsTPUxB4L0": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "CreatePlayerScoreLambdaFunction"
               },
-              "CodeSha256": "Xpg7cIM0jxYyOdwo58DgMfNj97EGrH9FW2uEE2YDjlo="
+              "CodeSha256": "He7m8ohpvfoB0kmT3XGZqlWFM1TziOWYvJojBrv1Vvk="
+            }
+          },
+          "CreateFileLambdaVersionFWE3TNEXWaOQaeZtO2t5TPTzjcNkeudpZ7KmVp2piw": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "CreateFileLambdaFunction"
+              },
+              "CodeSha256": "YAzoaTb47CQX/5UwqIvMH5TytWdsifAR7rCtWARvXHk="
+            }
+          },
+          "GetFileNameLambdaVersionwtsqV2oZpaEOZYr8zQavtHFIXjz3VjiSzsRCwiXzbzQ": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetFileNameLambdaFunction"
+              },
+              "CodeSha256": "mhYi7St6SZ2RrQy+u6A0baHNC6iZlXGoUVCU1eg5CDM="
             }
           },
           "ApiGatewayRestApi": {
@@ -607,6 +654,33 @@
                 "Ref": "ApiGatewayResourceGetDashfile"
               },
               "PathPart": "{fileName}",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceJokes": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "jokes",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceJokesProxyVar": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Ref": "ApiGatewayResourceJokes"
+              },
+              "PathPart": "{proxy+}",
               "RestApiId": {
                 "Ref": "ApiGatewayRestApi"
               }
@@ -1067,7 +1141,50 @@
               "GetFileNameLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1650601948587": {
+          "ApiGatewayMethodJokesProxyVarAny": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "ANY",
+              "RequestParameters": {
+                "method.request.path.proxy": true
+              },
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceJokesProxyVar"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "ANY",
+                "Type": "HTTP_PROXY",
+                "Uri": "http://api.icndb.com/{proxy}",
+                "RequestParameters": {
+                  "integration.request.path.proxy": "method.request.path.proxy"
+                }
+              },
+              "MethodResponses": [],
+              "RequestValidatorId": {
+                "Ref": "ApiGatewayAwsserverlessRequestValidator"
+              }
+            },
+            "DependsOn": [
+              "ProxyLambdaPermissionApiGateway"
+            ]
+          },
+          "ApiGatewayAwsserverlessRequestValidator": {
+            "Type": "AWS::ApiGateway::RequestValidator",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ValidateRequestBody": true,
+              "ValidateRequestParameters": true,
+              "Name": "awsserverless-dev | Validate request body and querystring parameters"
+            }
+          },
+          "ApiGatewayDeployment1651206336422": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -1085,7 +1202,8 @@
               "ApiGatewayMethodGetDashplayerDashscoreIdVarGet",
               "ApiGatewayMethodCreateDashuserIdVarPost",
               "ApiGatewayMethodCreateDashfileFilenameVarPost",
-              "ApiGatewayMethodGetDashfileFilenameVarGet"
+              "ApiGatewayMethodGetDashfileFilenameVarGet",
+              "ApiGatewayMethodJokesProxyVarAny"
             ]
           },
           "ApiGatewayApiKey1": {
@@ -1102,11 +1220,11 @@
                 }
               ]
             },
-            "DependsOn": "ApiGatewayDeployment1650601948587"
+            "DependsOn": "ApiGatewayDeployment1651206336422"
           },
           "ApiGatewayUsagePlan": {
             "Type": "AWS::ApiGateway::UsagePlan",
-            "DependsOn": "ApiGatewayDeployment1650601948587",
+            "DependsOn": "ApiGatewayDeployment1651206336422",
             "Properties": {
               "ApiStages": [
                 {
@@ -1317,6 +1435,43 @@
               }
             }
           },
+          "ProxyLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "ProxyLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
           "DemoBucketUpload": {
             "Type": "AWS::S3::Bucket",
             "Properties": {
@@ -1352,37 +1507,55 @@
               "Name": "sls-awsserverless-dev-ServerlessDeploymentBucketName"
             }
           },
-          "HelloLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-              "Ref": "HelloLambdaVersion99rhV1pGOGhrt3cWCOOEp112hSK3cEpTEwfWW8QV6Y"
-            },
-            "Export": {
-              "Name": "sls-awsserverless-dev-HelloLambdaFunctionQualifiedArn"
-            }
-          },
           "GetUserLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetUserLambdaVersionBvbp2cRifmV0NNQnXHRUxgIvM3UxLHowLEI6PPKb3M"
+              "Ref": "GetUserLambdaVersionGibQLeIh6TYujY0chDxl5lEXkb90A2gXKuAov6nFE"
             },
             "Export": {
               "Name": "sls-awsserverless-dev-GetUserLambdaFunctionQualifiedArn"
             }
           },
+          "ProxyLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "ProxyLambdaVersionV5dhU5f43y2kDgWFKLI6ScY5JbWp0alaGcJ9zzq2Mk"
+            },
+            "Export": {
+              "Name": "sls-awsserverless-dev-ProxyLambdaFunctionQualifiedArn"
+            }
+          },
+          "HelloLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "HelloLambdaVersionOfVCuVtqGAPwxkSsnAOPOV87qziiYuDaIwvljaxhjQ"
+            },
+            "Export": {
+              "Name": "sls-awsserverless-dev-HelloLambdaFunctionQualifiedArn"
+            }
+          },
           "GetPlayerScoreLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetPlayerScoreLambdaVersionwJGIKXnfpGGExyOLMgryTqTps70kJ2zK1y2qlEt26Gc"
+              "Ref": "GetPlayerScoreLambdaVersion8rxNmLcth8312cF5i0cxVq8EWZgxXIASx6zxSEQOIg"
             },
             "Export": {
               "Name": "sls-awsserverless-dev-GetPlayerScoreLambdaFunctionQualifiedArn"
             }
           },
+          "CreatePlayerScoreLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "CreatePlayerScoreLambdaVersioncfEpigiOcQRQCqBJGKfVmpftdOgTQmZ1jtsTPUxB4L0"
+            },
+            "Export": {
+              "Name": "sls-awsserverless-dev-CreatePlayerScoreLambdaFunctionQualifiedArn"
+            }
+          },
           "CreateFileLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "CreateFileLambdaVersion57VdI7plmwoPJIo72ZdGNy8Qj18A323zeqKxcRM4CgI"
+              "Ref": "CreateFileLambdaVersionFWE3TNEXWaOQaeZtO2t5TPTzjcNkeudpZ7KmVp2piw"
             },
             "Export": {
               "Name": "sls-awsserverless-dev-CreateFileLambdaFunctionQualifiedArn"
@@ -1391,19 +1564,10 @@
           "GetFileNameLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "GetFileNameLambdaVersione67X4V19A4jQWaCKyVKwtlDa73Yj1DVEwffkOojrY"
+              "Ref": "GetFileNameLambdaVersionwtsqV2oZpaEOZYr8zQavtHFIXjz3VjiSzsRCwiXzbzQ"
             },
             "Export": {
               "Name": "sls-awsserverless-dev-GetFileNameLambdaFunctionQualifiedArn"
-            }
-          },
-          "CreatePlayerScoreLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-              "Ref": "CreatePlayerScoreLambdaVersionup7ehDlwNMsE7HYTstApvqPLpguJw675QoFEfpg0Qmg"
-            },
-            "Export": {
-              "Name": "sls-awsserverless-dev-CreatePlayerScoreLambdaFunctionQualifiedArn"
             }
           },
           "ServiceEndpoint": {
@@ -1545,7 +1709,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "HelloLambdaVersion99rhV1pGOGhrt3cWCOOEp112hSK3cEpTEwfWW8QV6Y"
+        "versionLogicalId": "HelloLambdaVersionOfVCuVtqGAPwxkSsnAOPOV87qziiYuDaIwvljaxhjQ"
       },
       "getUser": {
         "handler": "lambdas/endpoint/getUser.handler",
@@ -1583,7 +1747,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "GetUserLambdaVersionBvbp2cRifmV0NNQnXHRUxgIvM3UxLHowLEI6PPKb3M"
+        "versionLogicalId": "GetUserLambdaVersionGibQLeIh6TYujY0chDxl5lEXkb90A2gXKuAov6nFE"
       },
       "getPlayerScore": {
         "handler": "lambdas/endpoint/getPlayerScore.handler",
@@ -1620,7 +1784,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "GetPlayerScoreLambdaVersionwJGIKXnfpGGExyOLMgryTqTps70kJ2zK1y2qlEt26Gc"
+        "versionLogicalId": "GetPlayerScoreLambdaVersion8rxNmLcth8312cF5i0cxVq8EWZgxXIASx6zxSEQOIg"
       },
       "createPlayerScore": {
         "handler": "lambdas/endpoint/createUser.handler",
@@ -1657,7 +1821,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "CreatePlayerScoreLambdaVersionup7ehDlwNMsE7HYTstApvqPLpguJw675QoFEfpg0Qmg"
+        "versionLogicalId": "CreatePlayerScoreLambdaVersioncfEpigiOcQRQCqBJGKfVmpftdOgTQmZ1jtsTPUxB4L0"
       },
       "createFile": {
         "handler": "lambdas/endpoint/createFile.handler",
@@ -1694,7 +1858,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "CreateFileLambdaVersion57VdI7plmwoPJIo72ZdGNy8Qj18A323zeqKxcRM4CgI"
+        "versionLogicalId": "CreateFileLambdaVersionFWE3TNEXWaOQaeZtO2t5TPTzjcNkeudpZ7KmVp2piw"
       },
       "getFileName": {
         "handler": "lambdas/endpoint/getFile.handler",
@@ -1731,7 +1895,35 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "GetFileNameLambdaVersione67X4V19A4jQWaCKyVKwtlDa73Yj1DVEwffkOojrY"
+        "versionLogicalId": "GetFileNameLambdaVersionwtsqV2oZpaEOZYr8zQavtHFIXjz3VjiSzsRCwiXzbzQ"
+      },
+      "proxy": {
+        "handler": "lambdas/endpoint/proxy.handler",
+        "events": [
+          {
+            "http": {
+              "path": "jokes/{proxy+}",
+              "method": "any",
+              "integration": "HTTP_PROXY",
+              "request": {
+                "uri": "http://api.icndb.com/{proxy}",
+                "parameters": {
+                  "method.request.path.proxy": true
+                }
+              },
+              "connectionType": null
+            }
+          }
+        ],
+        "name": "awsserverless-dev-proxy",
+        "package": {
+          "artifact": ".serverless\\proxy.zip"
+        },
+        "memory": 1024,
+        "timeout": 6,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "ProxyLambdaVersionV5dhU5f43y2kDgWFKLI6ScY5JbWp0alaGcJ9zzq2Mk"
       }
     },
     "resources": {
@@ -1777,7 +1969,7 @@
       "package": {
         "individually": true,
         "artifactsS3KeyDirname": "serverless/awsserverless/dev/code-artifacts",
-        "artifactDirectoryName": "serverless/awsserverless/dev/1650601961521-2022-04-22T04:32:41.521Z"
+        "artifactDirectoryName": "serverless/awsserverless/dev/1651206353520-2022-04-29T04:25:53.520Z"
       },
       "custom": {
         "$ref": "$[\"service\"][\"custom\"]"
@@ -1794,7 +1986,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/awsserverless/dev/1650601961521-2022-04-22T04:32:41.521Z",
+    "artifactDirectoryName": "serverless/awsserverless/dev/1651206353520-2022-04-29T04:25:53.520Z",
     "artifact": ""
   }
 }
